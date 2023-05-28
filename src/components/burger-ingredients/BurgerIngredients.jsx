@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, UseRef, useRef} from 'react';
 import ingredientsStyles from './burger-ingredients.module.scss'
 import {Tab, CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import {burgers} from "../../utils/data";
@@ -16,6 +16,24 @@ const filling = burgers.filter(item => item.type === "main");
 
 const BurgerIngredients = () => {
 	const [ingredientType, setIngredientType] = useState('Булки');
+	const bunRef = useRef();
+	const sauceRef = useRef();
+	const fillingRef = useRef();
+	
+	const handleTabClick = (title) => {
+		setIngredientType(title);
+		const easyScroll = { behavior: "smooth" };
+		switch (title) {
+			case 'Булки':
+				bunRef.current.scrollIntoView(easyScroll);
+				break;
+			case 'Соусы':
+				sauceRef.current.scrollIntoView(easyScroll);
+				break;
+			case 'Начинки':
+				fillingRef.current.scrollIntoView(easyScroll);
+		}
+	 }
 	
 	return (
 		<div className={ingredientsStyles.content}>
@@ -26,14 +44,14 @@ const BurgerIngredients = () => {
 			<div className={ingredientsStyles.tabs}>
 				{types.map(type => (
 					<Tab key={type.id} value={ingredientType} active={type.title === ingredientType}
-					     onClick={() => setIngredientType(type.title)}>
+					     onClick={() => handleTabClick(type.title)}>
 						{type.title}
 					</Tab>
 				))}
 			</div>
 			
 			<div className={clsx("custom-scroll mt-10", ingredientsStyles.lists)}>
-				<h2 className="text text_type_main-medium mb-6">Булки</h2>
+				<h2 ref={bunRef} className="text text_type_main-medium mb-6">Булки</h2>
 				<ul className={ingredientsStyles.list}>
 					{buns.map(burger => (
 						<li className={ingredientsStyles.burgerItem} key={burger._id}>
@@ -50,7 +68,7 @@ const BurgerIngredients = () => {
 					))}
 				</ul>
 				
-				<h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+				<h2 ref={sauceRef} className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
 				
 				<ul className={ingredientsStyles.list}>
 					{sauces.map(burger => (
@@ -68,7 +86,7 @@ const BurgerIngredients = () => {
 					))}
 				</ul>
 				
-				<h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+				<h2 ref={fillingRef} className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
 				
 				<ul className={ingredientsStyles.list}>
 					{filling.map(burger => (
