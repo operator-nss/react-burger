@@ -1,8 +1,8 @@
-import React, {useState, UseRef, useRef} from 'react';
-import ingredientsStyles from './burger-ingredients.module.scss'
+import {useState, useRef, FC, SetStateAction, Dispatch} from 'react';
 import {Tab, CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
-import {burgers} from "../../utils/data";
 import clsx from "clsx";
+import ingredientsStyles from './burger-ingredients.module.scss'
+import {IBurger} from "../../types/types";
 
 const types = [
 	{id: 0, type: "bun", title: 'Булки'},
@@ -10,28 +10,33 @@ const types = [
 	{id: 2, type: "main", title: 'Начинки'},
 ]
 
-const buns = burgers.filter(item => item.type === "bun");
-const sauces = burgers.filter(item => item.type === "sauce");
-const filling = burgers.filter(item => item.type === "main");
+interface IBurgerIngredients {
+	burgers: IBurger[]
+	setSelectIngredient: Dispatch<SetStateAction<IBurger | null>>
+}
 
-const BurgerIngredients = () => {
+const BurgerIngredients:FC<IBurgerIngredients> = ({burgers, setSelectIngredient}) => {
 	const [ingredientType, setIngredientType] = useState('Булки');
-	const bunRef = useRef();
-	const sauceRef = useRef();
-	const fillingRef = useRef();
+	const bunRef = useRef<HTMLHeadingElement | null>(null);
+	const sauceRef = useRef<HTMLHeadingElement | null>(null);
+	const fillingRef = useRef<HTMLHeadingElement | null>(null);
 	
-	const handleTabClick = (title) => {
+	const buns:IBurger[] = burgers?.filter(item => item.type === "bun");
+	const sauces:IBurger[] = burgers?.filter(item => item.type === "sauce");
+	const filling:IBurger[] = burgers?.filter(item => item.type === "main");
+	
+	const handleTabClick = (title:string) => {
 		setIngredientType(title);
-		const easyScroll = { behavior: "smooth" };
+		const easyScroll: object = { behavior: "smooth" };
 		switch (title) {
 			case 'Булки':
-				bunRef.current.scrollIntoView(easyScroll);
+				bunRef.current?.scrollIntoView(easyScroll);
 				break;
 			case 'Соусы':
-				sauceRef.current.scrollIntoView(easyScroll);
+				sauceRef.current?.scrollIntoView(easyScroll);
 				break;
-			case 'Начинки':
-				fillingRef.current.scrollIntoView(easyScroll);
+			default:
+				fillingRef.current?.scrollIntoView(easyScroll);
 		}
 	 }
 	
@@ -54,7 +59,7 @@ const BurgerIngredients = () => {
 				<h2 ref={bunRef} className="text text_type_main-medium mb-6">Булки</h2>
 				<ul className={ingredientsStyles.list}>
 					{buns.map(burger => (
-						<li className={ingredientsStyles.burgerItem} key={burger._id}>
+						<li onClick={() => setSelectIngredient(burger)} className={ingredientsStyles.burgerItem} key={burger._id}>
 							<img className={ingredientsStyles.image} src={burger.image_large} alt=""/>
 							<div className={clsx(ingredientsStyles.price, "text text_type_main-medium")}>
 								{burger.price}
@@ -72,7 +77,7 @@ const BurgerIngredients = () => {
 				
 				<ul className={ingredientsStyles.list}>
 					{sauces.map(burger => (
-						<li className={ingredientsStyles.burgerItem} key={burger._id}>
+						<li onClick={() => setSelectIngredient(burger)} className={ingredientsStyles.burgerItem} key={burger._id}>
 							<img className={ingredientsStyles.image} src={burger.image_large} alt=""/>
 							<div className={clsx(ingredientsStyles.price, "text text_type_main-medium")}>
 								{burger.price}
@@ -90,7 +95,7 @@ const BurgerIngredients = () => {
 				
 				<ul className={ingredientsStyles.list}>
 					{filling.map(burger => (
-						<li className={ingredientsStyles.burgerItem} key={burger._id}>
+						<li onClick={() => setSelectIngredient(burger)} className={ingredientsStyles.burgerItem} key={burger._id}>
 							<img className={ingredientsStyles.image} src={burger.image_large} alt=""/>
 							<div className={clsx(ingredientsStyles.price, "text text_type_main-medium")}>
 								{burger.price}
@@ -104,9 +109,8 @@ const BurgerIngredients = () => {
 					))}
 				</ul>
 			</div>
-		
 		</div>
 	);
 };
-//bun main sauce
+
 export default BurgerIngredients;

@@ -1,13 +1,17 @@
-import React from "react";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {burgers} from "../../utils/data";
-import constructorStyles from './burger-constructor.module.scss'
 import clsx from "clsx";
+import {FC} from "react";
+import constructorStyles from './burger-constructor.module.scss'
+import {IBurger} from "../../types/types";
 
-const mainArr = burgers.filter(item => item.type !== "bun");
-const selectBun = burgers.find(bun => bun.type === "bun");
+interface IBurgerConstructor {
+	burgers: IBurger[]
+	setOrder: (val:boolean) => void
+}
 
-const BurgerConstructor = () => {
+const BurgerConstructor:FC<IBurgerConstructor> = ({burgers, setOrder}) => {
+		const mainArr:IBurger[] = burgers?.filter(item => item.type !== "bun");
+		const selectBun:IBurger | undefined = burgers?.find(bun => bun.type === "bun");
 	
 	return (
 		<div className="mt-25">
@@ -16,21 +20,21 @@ const BurgerConstructor = () => {
 					
 					<li className={clsx(constructorStyles.item, constructorStyles.first)}>
 						<ConstructorElement
-							isLocked={true}
-							type={'top'}
-							text={selectBun.name + '\n(верх)'}
-							price={selectBun.price}
-							thumbnail={selectBun.image_mobile}
+							isLocked
+							type='top'
+							text={`${selectBun?.name  }\n(верх)`}
+							price={selectBun?.price as number}
+							thumbnail={selectBun?.image_mobile as string}
 						/>
 					</li>
 					
 					<div className={clsx("custom-scroll pr-2", constructorStyles.scrollConstructor)}>
-						{mainArr.map(item => (
+						{mainArr?.map(item => (
 							<li key={item._id} className={constructorStyles.item}>
 								<DragIcon type="primary"/>
 								<ConstructorElement
 									isLocked={false}
-									text={item.name}
+									text={item?.name}
 									price={item.price}
 									thumbnail={item.image_mobile}
 								/>
@@ -40,11 +44,11 @@ const BurgerConstructor = () => {
 
 					<li className={clsx(constructorStyles.item, constructorStyles.end)}>
 						<ConstructorElement
-							isLocked={true}
-							type={'bottom'}
-							text={selectBun.name  + '\n(низ)'}
-							price={selectBun.price}
-							thumbnail={selectBun.image_mobile}
+							isLocked
+							type="bottom"
+							text={`${selectBun?.name   }\n(низ)`}
+							price={selectBun?.price as number}
+							thumbnail={selectBun?.image_mobile as string}
 						/>
 					</li>
 				</ul>
@@ -60,7 +64,7 @@ const BurgerConstructor = () => {
 					
 				</div>
 				
-				<Button htmlType="button" type="primary" size="large">
+				<Button onClick={() => setOrder(true)} htmlType="button" type="primary" size="large">
 					Оформить заказ
 				</Button>
 			</div>

@@ -29,7 +29,8 @@
 }
 
 .user {
-  @extend .listItem;
+  display: flex;
+  align-items: center;
   flex: 0 1 calc(50% - 155px);
   justify-content: flex-end;
 }
