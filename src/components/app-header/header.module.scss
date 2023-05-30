@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex: 0 1 calc(50% - 155px);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.listItem a {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  color: #fff;
+}
+
+.logo {
+  flex: 0 1 ;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  flex: 0 1 calc(50% - 155px);
+  justify-content: flex-end;
+}

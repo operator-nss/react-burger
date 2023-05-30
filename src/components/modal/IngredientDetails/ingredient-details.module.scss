@@ -1,0 +1,36 @@
+
+.title {
+  color: #f2f2f3;
+}
+
+.content {
+  max-width: 520px;
+  margin: auto;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.name {
+  color: #f2f2f3;
+  text-align: center;
+}
+
+.structure {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: #8585AD;
+}
+
+.structureCount {
+  text-align: center;
+}

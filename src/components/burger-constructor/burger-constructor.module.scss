@@ -1,0 +1,57 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 14px;
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+  &.first {
+    margin-left: 32px;
+    padding-right: 22px;
+  }
+  &.end {
+    @extend .first;
+    margin-top: 16px;
+  }
+}
+
+.list {
+  max-height: calc(100vh - 344px);
+}
+
+.content {
+  flex: 0 1 50%;
+}
+
+.scrollConstructor {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: calc(100vh - 520px);
+}
+
+.order {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
+  margin-right: 29px;
+}
+
+.count {
+  font-size: 48px;
+  font-family: 'Iceland', Arial, sans-serif;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priceIcon {
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+}
