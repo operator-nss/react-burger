@@ -1,48 +1,50 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
-import appStyles from './app.module.scss';
+import React, {useEffect} from 'react';
+import {useSelector} from "react-redux";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
-import {API_URL} from "../../utils/constants";
 import Modal from "../modal/Modal";
-import {IBurger} from "../../types/types";
+import {fetchIngredients} from "../../services/actions/burgerActions";
+import {RootState, useAppDispatch} from "../../services/store";
+import Preloader from "../Preloader/Preloader";
+import appStyles from './app.module.scss';
+import {setModal} from "../../services/slices/burgers.slice";
+
 
 const App = () => {
-	const [burgersData, setBurgersData] = useState([]);
-	const [openModal, setOpenModal] = useState(false);
-	const [selectIngredient, setSelectIngredient] = useState<IBurger | null>(null);
-	const [order, setOrder] = useState<boolean>(false);
-	
-	const fetchData = async () => {
-		try {
-			const {data} = await axios.get(API_URL);
-			setBurgersData(data.data)
-		} catch (err: unknown) {
-			console.log(err)
-		}
-	}
-	
-	useEffect(() => {
-		fetchData()
-	}, [])
-	
-	useEffect(() => {
-		if (selectIngredient || order) {
-			setOpenModal(true)
-		}
-	}, [selectIngredient, order])
-	
-	return (
-		<div className={appStyles.App}>
-			<Modal setSelectIngredient={setSelectIngredient} setOrder={setOrder} order={order} selectIngredient={selectIngredient} setOpenModal={setOpenModal} openModal={openModal}/>
-			<AppHeader openModal={openModal} setOpenModal={setOpenModal}/>
-			<section className={appStyles.content}>
-				<BurgerIngredients setSelectIngredient={setSelectIngredient} burgers={burgersData}/>
-				<BurgerConstructor setOrder={setOrder} burgers={burgersData}/>
-			</section>
-		</div>
-	);
+  const dispatch = useAppDispatch();
+  const {isLoading, errorBurgers} = useSelector((state: RootState) => state.burgers)
+  const {chosenIngredient} = useSelector((state: RootState) => state.info)
+  const {isOrder} = useSelector((state: RootState) => state.order)
+
+  useEffect(() => {
+    dispatch(fetchIngredients())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (chosenIngredient || isOrder) {
+      dispatch(setModal(true))
+    }
+  }, [chosenIngredient, isOrder, dispatch])
+
+  return (
+    <div className={appStyles.App}>
+      {(isOrder || chosenIngredient) && <Modal/>}
+
+      <AppHeader/>
+      <DndProvider backend={HTML5Backend}>
+        {(isLoading) ? <Preloader/> :
+          (errorBurgers
+            ? <div>Ошибка получения ингредиентов с сервера. Попробуйте позже</div>
+            : <section className={appStyles.content}>
+              <BurgerIngredients/>
+              <BurgerConstructor/>
+            </section>)}
+      </DndProvider>
+    </div>
+  );
 }
 
 export default App;
