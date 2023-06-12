@@ -21,3 +21,11 @@
 .textGray {
   color: #8585AD;
 }
+
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #F2F2F3;
+  transform: translate(-50%, -50%);
+}

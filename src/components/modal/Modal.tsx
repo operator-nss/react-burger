@@ -1,34 +1,34 @@
-import {Dispatch, FC, KeyboardEvent, SetStateAction, useCallback, useEffect, useState} from 'react';
+import {FC, KeyboardEvent, useCallback, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom'
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import clsx from "clsx";
+import {useSelector} from "react-redux";
+
 import ModalOverlay from "./ModalOverlay/ModalOverlay/ModalOverlay";
-import './modal.scss'
 
 import OrderDetails from "./OrderDetails/OrderDetails";
 import IngredientDetails from "./IngredientDetails/IngredientDetails";
-import {IBurger} from "../../types/types";
+import {RootState, useAppDispatch} from "../../services/store";
+import {setChosenIngredient} from "../../services/slices/info-ingredient.slice";
+import './modal.scss'
+import {setModal} from "../../services/slices/burgers.slice";
+import {setOrder} from "../../services/slices/order.slice";
 
 
 const modalRoot = document.getElementById('react-modals');
 
-interface IModal {
-  order: boolean
-  setOrder: (value: boolean) => void
-  openModal: boolean
-  setOpenModal: (value: boolean) => void
-  selectIngredient: IBurger | null
-  setSelectIngredient: Dispatch<SetStateAction<IBurger | null>>
-}
-
-const Modal: FC<IModal> = ({order, setOrder, openModal, setOpenModal, selectIngredient, setSelectIngredient}) => {
+const Modal: FC = () => {
   const [hoverClose, setHoverClose] = useState(false);
+  const dispatch = useAppDispatch();
+  const {chosenIngredient} = useSelector((state: RootState) => state.info)
+  const {openModal} = useSelector((state: RootState) => state.burgers)
+  const {isOrder} = useSelector((state: RootState) => state.order)
 
   const closeModal = useCallback(() => {
-    setOpenModal(false)
-    setOrder(false)
-    setSelectIngredient(null)
-  }, [setOpenModal, setOrder, setSelectIngredient])
+    dispatch(setModal(false))
+    dispatch(setOrder(false))
+    dispatch(setChosenIngredient(null))
+  }, [dispatch])
 
   const escButtonHandle = useCallback((e: KeyboardEvent<Document>): void => {
     if (e.keyCode === 27) {
@@ -37,13 +37,13 @@ const Modal: FC<IModal> = ({order, setOrder, openModal, setOpenModal, selectIngr
   }, [closeModal])
 
   useEffect(() => {
-    if (openModal || order) {
+    if (openModal || isOrder) {
       document.addEventListener("keydown", escButtonHandle as any);
     }
     return () => {
       document.removeEventListener("keydown", escButtonHandle as any);
     }
-  }, [openModal, order, escButtonHandle])
+  }, [openModal, isOrder, escButtonHandle])
 
   return ReactDOM.createPortal(
     <ModalOverlay openModal={openModal} closeModal={closeModal}>
@@ -58,9 +58,9 @@ const Modal: FC<IModal> = ({order, setOrder, openModal, setOpenModal, selectIngr
           <CloseIcon type={!hoverClose ? "primary" : 'success'}/>
         </div>
 
-        {selectIngredient && <IngredientDetails selectIngredient={selectIngredient}/>}
+        {chosenIngredient && <IngredientDetails selectIngredient={chosenIngredient}/>}
 
-        {order && <OrderDetails/>}
+        {isOrder && <OrderDetails/>}
 
       </div>
     </ModalOverlay>

@@ -12,3 +12,9 @@ export interface IBurger {
   proteins: number
   __v: number
 }
+
+export interface IConstructorDnDBurger {
+  burger: IBurger
+  index: number
+  itemIndex: number
+}

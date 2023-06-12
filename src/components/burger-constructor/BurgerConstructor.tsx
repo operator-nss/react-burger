@@ -1,77 +1,130 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import clsx from "clsx";
-import {FC} from "react";
-import constructorStyles from './burger-constructor.module.scss'
+import {FC, useEffect} from "react";
+import {useDrop} from "react-dnd";
+import {useSelector} from "react-redux";
+import {RootState, useAppDispatch} from "../../services/store";
 import {IBurger} from "../../types/types";
+import constructorStyles from './burger-constructor.module.scss'
+import {deleteFilling, setFilling, setMainBun} from "../../services/slices/constructor.slice";
+import {setOrder, setTotalPrice} from "../../services/slices/order.slice";
+import ConstructorIngredient from "../burger-ingredient/ConstructorIngredient";
+import {getOrder} from "../../services/actions/orderActions";
 
-interface IBurgerConstructor {
-	burgers: IBurger[]
-	setOrder: (val:boolean) => void
-}
 
-const BurgerConstructor:FC<IBurgerConstructor> = ({burgers, setOrder}) => {
-		const mainArr:IBurger[] = burgers?.filter(item => item.type !== "bun");
-		const selectBun:IBurger | undefined = burgers?.find(bun => bun.type === "bun");
-	
-	return (
-		<div className="mt-25">
-			<div className={clsx("pr-2", constructorStyles.content)}>
-				<ul className={constructorStyles.list}>
-					
-					<li className={clsx(constructorStyles.item, constructorStyles.first)}>
+const BurgerConstructor: FC = () => {
+
+  const {bun, ingredients} = useSelector((state: RootState) => state.burgerConstructor)
+  const {totalPrice} = useSelector((state: RootState) => state.order)
+  const {burgerItems} = useSelector((state: RootState) => state.burgers)
+
+  const dispatch = useAppDispatch();
+
+  const onDropAddHandler = (item: IBurger) => {
+    const findItem = burgerItems?.find(ingredient => ingredient._id === item._id)
+    if (findItem && findItem.type === 'bun') {
+      dispatch(setMainBun(findItem))
+    } else if (bun && findItem && findItem.type !== 'bun') {
+      const idKey = findItem._id + ingredients?.length
+      dispatch(setFilling({
+        ...findItem,
+        idKey
+      }))
+    }
+  }
+
+  const deleteFillingHandler = (idKey: string) => {
+    dispatch(deleteFilling(idKey))
+  }
+
+  const [{isHover}, dropList] = useDrop({
+    accept: "ingredient",
+    drop(item: IBurger) {
+      onDropAddHandler(item)
+    },
+    collect: monitor => ({
+      isHover: !!monitor.isOver()
+    })
+  })
+
+
+  useEffect(() => {
+    let burgerPrice = 0;
+    if (bun) {
+      burgerPrice += bun?.price * 2;
+    }
+    if (ingredients?.length) {
+      let ingredientsSum = 0
+      ingredients?.forEach((item: IBurger) => {
+        ingredientsSum += item.price
+      }, 0)
+      burgerPrice += ingredientsSum;
+    }
+    dispatch(setTotalPrice(burgerPrice))
+  }, [bun, ingredients, dispatch])
+
+  const getOrderHandler = () => {
+    dispatch(setOrder(true))
+    dispatch(getOrder())
+  }
+
+  return (
+    <div ref={dropList} className="mt-25">
+      <div className={clsx("pr-2", constructorStyles.content)}>
+        <ul className={constructorStyles.list}>
+
+          {bun && <li className={clsx(constructorStyles.item, constructorStyles.first)}>
 						<ConstructorElement
 							isLocked
 							type='top'
-							text={`${selectBun?.name  }\n(верх)`}
-							price={selectBun?.price as number}
-							thumbnail={selectBun?.image_mobile as string}
+							text={`${bun?.name}\n(верх)`}
+							price={bun?.price as number}
+							thumbnail={bun?.image_mobile as string}
 						/>
-					</li>
-					
-					<div className={clsx("custom-scroll pr-2", constructorStyles.scrollConstructor)}>
-						{mainArr?.map(item => (
-							<li key={item._id} className={constructorStyles.item}>
-								<DragIcon type="primary"/>
-								<ConstructorElement
-									isLocked={false}
-									text={item?.name}
-									price={item.price}
-									thumbnail={item.image_mobile}
-								/>
-							</li>
-						))}
-					</div>
+					</li>}
 
-					<li className={clsx(constructorStyles.item, constructorStyles.end)}>
+          {bun && ingredients && <div className={clsx("custom-scroll pr-2", constructorStyles.scrollConstructor)}>
+            {ingredients?.map((burger, index) => (
+              <ConstructorIngredient
+                itemIndex={index}
+                deleteFillingHandler={deleteFillingHandler}
+                burger={burger}
+                key={burger.idKey}
+                {...burger}
+              />
+            ))}
+					</div>}
+
+          {bun && <li className={clsx(constructorStyles.item, constructorStyles.end)}>
 						<ConstructorElement
 							isLocked
 							type="bottom"
-							text={`${selectBun?.name   }\n(низ)`}
-							price={selectBun?.price as number}
-							thumbnail={selectBun?.image_mobile as string}
+							text={`${bun?.name}\n(низ)`}
+							price={bun?.price as number}
+							thumbnail={bun?.image_mobile as string}
 						/>
-					</li>
-				</ul>
-			</div>
-			
-			
-			<div className={clsx("mt-10", constructorStyles.order)}>
-				<div className={constructorStyles.price}>
-					<span className={constructorStyles.count}>610</span>
-					<div className={constructorStyles.priceIcon}>
-						<CurrencyIcon type="primary"/>
-					</div>
-					
-				</div>
-				
-				<Button onClick={() => setOrder(true)} htmlType="button" type="primary" size="large">
-					Оформить заказ
-				</Button>
-			</div>
-		
-		</div>
-	
-	);
+					</li>}
+        </ul>
+      </div>
+
+
+      <div className={clsx("mt-10", constructorStyles.order)}>
+        <div className={constructorStyles.price}>
+          <span className={constructorStyles.count}>{totalPrice}</span>
+          <div className={constructorStyles.priceIcon}>
+            <CurrencyIcon type="primary"/>
+          </div>
+
+        </div>
+
+        <Button disabled={!bun} onClick={getOrderHandler} htmlType="button" type="primary" size="large">
+          Оформить заказ
+        </Button>
+      </div>
+
+    </div>
+
+  );
 };
 
 export default BurgerConstructor;

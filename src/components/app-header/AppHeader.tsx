@@ -2,12 +2,8 @@ import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-devel
 import {FC} from "react";
 import headerStyles from './header.module.scss'
 
-interface IAppHeader {
-  setOpenModal: (value: boolean) => void
-  openModal: boolean
-}
 
-const AppHeader: FC<IAppHeader> = () => (
+const AppHeader: FC = () => (
     <div className={headerStyles.header}>
       <nav className={headerStyles.nav}>
         <ul className={headerStyles.list}>
