@@ -21,11 +21,24 @@
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  color: #fff;
+  color: #8585AD;
+  transition: color 0.3s;
+  svg {
+    transition: fill 0.3s;
+  }
+}
+
+.activeLink {
+  p {
+    color: #fff;
+  }
+  svg {
+    fill: #fff;
+  }
 }
 
 .logo {
-  flex: 0 1 ;
+  flex: 0 1;
 }
 
 .user {
@@ -33,4 +46,9 @@
   align-items: center;
   flex: 0 1 calc(50% - 155px);
   justify-content: flex-end;
+
+  a {
+    display: flex;
+    align-items: center;
+  }
 }

@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import burgers from './slices/burgers.slice'
 import order from './slices/order.slice'
 import burgerConstructor from './slices/constructor.slice'
+import user from './slices/user.slice'
 import info from './slices/info-ingredient.slice'
 
 export const store = configureStore({
@@ -10,7 +11,8 @@ export const store = configureStore({
     burgers,
     burgerConstructor,
     order,
-    info
+    info,
+    user
   },
 })
 

@@ -1,0 +1,43 @@
+.content {
+  max-width: 480px;
+  margin: 180px auto 0;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  color: #8585AD;
+  gap: 8px;
+  justify-content: center;
+
+  a {
+    text-decoration: none;
+    color: #4C4CFF;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      transform-origin: right;
+      background: #4C4CFF;
+      transition: transform 0.3s ease-in-out 0s;
+      transform: scaleX(0);
+    }
+    @media (any-hover: hover) {
+      &:hover {
+        &::after {
+          transform-origin: left;
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+}
