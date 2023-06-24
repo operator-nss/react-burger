@@ -17,7 +17,7 @@ const ForgotPassword: FC = () => {
 
   const resetPasswordHandler = (e: any) => {
     if (e.keyCode === 13 || e._reactName === "onClick") {
-      dispatch(sendEmailReset('operator_nss@mail.ru'))
+      dispatch(sendEmailReset(email))
     }
   }
 

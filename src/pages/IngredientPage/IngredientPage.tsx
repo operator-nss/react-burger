@@ -12,13 +12,13 @@ const IngredientPage: FC = () => {
   const params = useParams()
 
   useEffect(() => {
-    const ingredient = burgerItems?.find(item => item._id === params.id)
+    const ingredient = burgerItems?.find(item => item._id === params._id)
     if (ingredient) {
       setChosenIngredient(ingredient)
     } else {
       setChosenIngredient(null)
     }
-  }, [burgerItems, params.id])
+  }, [burgerItems, params])
 
   return (
     <div className='mt-30'>
