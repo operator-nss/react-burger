@@ -1,33 +1,40 @@
-import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components'
+import {BurgerIcon, ListIcon, Logo, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import {FC} from "react";
+import {NavLink} from "react-router-dom";
 import headerStyles from './header.module.scss'
 
 
-const AppHeader: FC = () => (
+const AppHeader: FC = () => {
+
+  return (
     <div className={headerStyles.header}>
       <nav className={headerStyles.nav}>
         <ul className={headerStyles.list}>
           <li className={headerStyles.listItem}>
-            <a href="#">
-              <BurgerIcon type="primary"/>
+            <NavLink className={({ isActive }) => isActive ? headerStyles.activeLink : ""} to='/'>
+              <BurgerIcon type="secondary"/>
               <p className="text_type_main-default ml-2">Конструктор</p>
-            </a>
+            </NavLink>
           </li>
           <li className={headerStyles.listItem}>
-            <a href="#">
+            <NavLink className={({ isActive }) => isActive ? headerStyles.activeLink : ""} to='/123'>
               <ListIcon type="secondary"/>
               <p className="text text_type_main-default text_color_inactive ml-2">Лента заказов</p>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>
       <div className={headerStyles.logo}><Logo/></div>
       <div className={headerStyles.user}>
-        <ProfileIcon type="secondary"/>
-        <p className="text text_type_main-default text_color_inactive ml-2">Личный кабинет</p>
+        <NavLink  to='/profile' className={({ isActive }) => isActive ? headerStyles.activeLink : ""}>
+          <ProfileIcon type="secondary"/>
+          <p className="text text_type_main-default text_color_inactive ml-2">Личный кабинет</p>
+        </NavLink>
       </div>
+
     </div>
-  )
+  );
+}
 
 
 export default AppHeader;

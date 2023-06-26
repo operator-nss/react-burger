@@ -2,7 +2,9 @@ import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-deve
 import clsx from "clsx";
 import {FC, useEffect} from "react";
 import {useDrop} from "react-dnd";
+import {getCookie} from "typescript-cookie";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {RootState, useAppDispatch} from "../../services/store";
 import {IBurger} from "../../types/types";
 import constructorStyles from './burger-constructor.module.scss'
@@ -17,8 +19,8 @@ const BurgerConstructor: FC = () => {
   const {bun, ingredients} = useSelector((state: RootState) => state.burgerConstructor)
   const {totalPrice} = useSelector((state: RootState) => state.order)
   const {burgerItems} = useSelector((state: RootState) => state.burgers)
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
   const onDropAddHandler = (item: IBurger) => {
     const findItem = burgerItems?.find(ingredient => ingredient._id === item._id)
@@ -64,6 +66,11 @@ const BurgerConstructor: FC = () => {
   }, [bun, ingredients, dispatch])
 
   const getOrderHandler = () => {
+    if (!getCookie('accessToken')) {
+      return navigate("/login", {
+        replace: true,
+      });
+    }
     dispatch(setOrder(true))
     dispatch(getOrder())
   }

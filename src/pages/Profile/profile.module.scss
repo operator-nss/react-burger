@@ -1,0 +1,41 @@
+.content {
+  display: flex;
+  gap: 60px;
+  max-width: 860px;
+  margin: 120px auto auto;
+  justify-content: space-between;
+}
+
+.menu {
+  color: #8585AD;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.active {
+  color: #fff;
+  cursor: default;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 860px;
+  margin: 24px auto 0;
+}
+
+.text {
+  color: #8585AD;
+  max-width: 320px;
+  opacity: 0.4;
+}
+
+.success {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}

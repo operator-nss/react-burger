@@ -27,7 +27,7 @@ const BurgerIngredients: FC = () => {
   const {ref: refBun, inView: bunInView} = useInView({
     threshold: 0,
   });
-  const {ref: refSouce, inView: souceInView} = useInView({
+  const {ref: refSauce, inView: souceInView} = useInView({
     threshold: 0,
   });
   const {ref: refFilling, inView: fillingInView} = useInView({
@@ -96,7 +96,7 @@ const BurgerIngredients: FC = () => {
 
         <h2 ref={sauceRef} className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
 
-        <ul ref={refSouce} className={ingredientsStyles.list}>
+        <ul ref={refSauce} className={ingredientsStyles.list}>
           {sauces?.map(burger => (
             <div className={ingredientsStyles.burgerItem} onClick={() => getIngredientInfo(burger)} key={burger._id}>
               <BurgerIngredient burger={burger}/>
