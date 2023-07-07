@@ -1,4 +1,4 @@
-import {createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import {ActionReducerMapBuilder, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import {ORDER_URL} from "../../utils/constants";
 import {IConstructorState} from "../slices/burgers.slice";
@@ -24,7 +24,7 @@ export const getOrder = createAsyncThunk<{state: RootState}>('order/getOrder', a
   }
 })
 
-export const getOrderHandler = (builder: any) => {
+export const getOrderHandler = (builder: ActionReducerMapBuilder<any>) => {
   builder.addCase(getOrder.pending, (state: IConstructorState) => {
     return {...state, isOrderLoading: true, orderError: false}
   })

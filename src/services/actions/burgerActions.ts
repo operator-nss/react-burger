@@ -1,4 +1,4 @@
-import {createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import {ActionReducerMapBuilder, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import {GET_INGREDIENTS} from "../../utils/constants";
 import {IBurger} from "../../types/types";
@@ -14,12 +14,12 @@ export const fetchIngredients = createAsyncThunk<IBurger[]>('burger/getIngredien
   }
 })
 
-export const fetchIngredientsHandler = (builder: any) => {
+export const fetchIngredientsHandler = (builder: ActionReducerMapBuilder<any>) => {
   builder.addCase(fetchIngredients.pending, (state: IConstructorState) => {
     return {...state, isLoading: true, errorBurgers: false}
   })
 
-  builder.addCase(fetchIngredients.fulfilled, (state: IConstructorState, action: PayloadAction<any>) => {
+  builder.addCase(fetchIngredients.fulfilled, (state: IConstructorState, action: PayloadAction<IBurger[]>) => {
     return {...state, isLoading: false, burgerItems: action.payload}
   })
 
