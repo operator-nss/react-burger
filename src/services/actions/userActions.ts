@@ -30,7 +30,7 @@ export const sendEmailReset = createAsyncThunk<ISendEmailReset, string>('user/se
   }
 })
 
-export const sendEmailResetHandler = (builder: ActionReducerMapBuilder<any>) => {
+export const sendEmailResetHandler = (builder: ActionReducerMapBuilder<IUserState>) => {
   builder.addCase(sendEmailReset.pending, (state: IUserState) => {
     return {...state, isLoading: true, ResetEmailSent: false}
   })

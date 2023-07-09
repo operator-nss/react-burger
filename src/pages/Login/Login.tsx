@@ -21,18 +21,16 @@ const Login: FC = () => {
     setPasswordType(passwordType === "text" ? "password" : "text")
   }
 
-  const loginHandler = (e: any) => {
-    if (e.keyCode === 13 || e._reactName === "onClick") {
-      dispatch(login({password, email}))
-    }
+  const loginHandler = () => {
+    dispatch(login({password, email}))
   }
 
   useEffect(() => {
-    if(userLogin) {
+    if (userLogin) {
       navigate('/profile')
       dispatch(clearUserLogin())
     }
-  }, [userLogin,dispatch, navigate])
+  }, [userLogin, dispatch, navigate])
 
   const clearError = () => {
     if (errorMessage) {
@@ -43,7 +41,7 @@ const Login: FC = () => {
   return (
     <div className={styles.content}>
       <h1 className={clsx(styles.title, 'text text_type_main-medium mb-6')}>Вход</h1>
-      <form onFocus={clearError} onKeyDown={loginHandler} onSubmit={(e) => e.preventDefault()}>
+      <form onFocus={clearError} onSubmit={(e) => e.preventDefault()}>
         <Input
           type='text'
           placeholder='E-mail'

@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from 'react'
+import {ChangeEvent, FC, SyntheticEvent, useEffect, useRef, useState} from 'react'
 import clsx from "clsx";
 import {useSelector} from "react-redux";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -24,10 +24,8 @@ const Register: FC = () => {
     setPasswordType(passwordType === "text" ? "password" : "text")
   }
 
-  const registerHandler = (e: any) => {
-    if (e.keyCode === 13 || e._reactName === "onClick") {
-      dispatch(register({email, password, name}))
-    }
+  const registerHandler = () => {
+    dispatch(register({email, password, name}))
   }
 
   const clearError = () => {
@@ -46,7 +44,7 @@ const Register: FC = () => {
   return (
     <div className={styles.content}>
       <h1 className={clsx(styles.title, 'text text_type_main-medium mb-6')}>Регистрация</h1>
-      <form onFocus={clearError} onKeyDown={registerHandler} onSubmit={(e) => e.preventDefault()}>
+      <form onFocus={clearError} onSubmit={(e) => e.preventDefault()}>
 
         <Input
           type='text'

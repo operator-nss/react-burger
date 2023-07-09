@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import './modal-overlay.scss'
-import {FC, SyntheticEvent} from "react";
+import {FC, ReactNode, SyntheticEvent} from "react";
 
 interface IModalOverlay {
 	openModal: boolean
 	closeModal: () => void
-  children: any
+  children: ReactNode
 }
 
 const ModalOverlay:FC<IModalOverlay> = ({children, openModal, closeModal}) => {

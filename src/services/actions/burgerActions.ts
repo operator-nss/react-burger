@@ -14,7 +14,7 @@ export const fetchIngredients = createAsyncThunk<IBurger[]>('burger/getIngredien
   }
 })
 
-export const fetchIngredientsHandler = (builder: ActionReducerMapBuilder<any>) => {
+export const fetchIngredientsHandler = (builder: ActionReducerMapBuilder<IConstructorState>) => {
   builder.addCase(fetchIngredients.pending, (state: IConstructorState) => {
     return {...state, isLoading: true, errorBurgers: false}
   })
