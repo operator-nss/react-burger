@@ -29,17 +29,15 @@ const ResetPassword: FC = () => {
     setPasswordType(passwordType === "text" ? "password" : "text")
   }
 
-  const resetPasswordHandler = (e: any) => {
-    if (e.keyCode === 13 || e._reactName === "onClick") {
-      dispatch(resetPassword({password, token}))
-    }
+  const resetPasswordHandler = () => {
+    dispatch(resetPassword({password, token}))
   }
 
   return (
 
     <div className={styles.content}>
       <h1 className={clsx(styles.title, 'text text_type_main-medium mb-6')}>Восстановление пароля</h1>
-      <form onKeyDown={resetPasswordHandler} onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()}>
 
         <Input
           type={passwordType}

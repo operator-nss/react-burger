@@ -6,7 +6,7 @@ import constructorStyles from "../burger-constructor/burger-constructor.module.s
 import {useAppDispatch} from "../../services/store";
 import {IConstructorDnDBurger} from "../../types/types";
 
-interface ConstructorIngredientInterface extends IConstructorIngredient {
+interface ConstructorIngredientInterface {
   deleteFillingHandler: (id: string) => void
   itemIndex: number
   burger: IConstructorIngredient

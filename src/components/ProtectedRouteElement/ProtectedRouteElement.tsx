@@ -1,11 +1,11 @@
-import {FC} from 'react'
+import {FC, ReactComponentElement} from 'react'
 import {Navigate, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../services/store";
 
 interface IProtectedRouteElement {
   onlyUnAuth?: boolean
-  component: any
+  component: ReactComponentElement<any>
 }
 
 const ProtectedRouteElement: FC<IProtectedRouteElement> = ({ onlyUnAuth = false, component}) => {

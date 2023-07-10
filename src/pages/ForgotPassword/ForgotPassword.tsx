@@ -15,10 +15,8 @@ const ForgotPassword: FC = () => {
   const navigate = useNavigate();
 
 
-  const resetPasswordHandler = (e: any) => {
-    if (e.keyCode === 13 || e._reactName === "onClick") {
-      dispatch(sendEmailReset(email))
-    }
+  const resetPasswordHandler = () => {
+    dispatch(sendEmailReset(email))
   }
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const ForgotPassword: FC = () => {
 
     <div className={styles.content}>
       <h1 className={clsx(styles.title, 'text text_type_main-medium mb-6')}>Восстановление пароля</h1>
-      <form onSubmit={(e) => e.preventDefault()} onKeyDown={resetPasswordHandler}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Input
           type='text'
           placeholder='Укажите e-mail'

@@ -1,4 +1,4 @@
-import {createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import {ActionReducerMapBuilder, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import {getCookie, removeCookie, setCookie} from "typescript-cookie";
 import {
@@ -30,7 +30,7 @@ export const sendEmailReset = createAsyncThunk<ISendEmailReset, string>('user/se
   }
 })
 
-export const sendEmailResetHandler = (builder: any) => {
+export const sendEmailResetHandler = (builder: ActionReducerMapBuilder<IUserState>) => {
   builder.addCase(sendEmailReset.pending, (state: IUserState) => {
     return {...state, isLoading: true, ResetEmailSent: false}
   })
@@ -57,7 +57,7 @@ export const resetPassword = createAsyncThunk<ISendEmailReset, IResetData>('user
   }
 })
 
-export const resetPasswordHandler = (builder: any) => {
+export const resetPasswordHandler = (builder: ActionReducerMapBuilder<any>) => {
   builder.addCase(resetPassword.pending, (state: IUserState) => {
     return {...state, isLoading: true, successReset: null}
   })

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import {getCookie, setCookie} from "typescript-cookie";
 import {INFO_USER_URL, UPDATE_TOKEN_URL} from "./constants";
 import {logout} from "../services/actions/userActions";
@@ -9,7 +9,7 @@ export const axiosWithTokens = axios.create({
     'Content-Type': 'application/json'
   }
 })
-const requestHandler = (request: any) => {
+const requestHandler = (request: InternalAxiosRequestConfig<any>) => {
   const accessToken = getCookie("accessToken")
   if (accessToken) {
     request.headers['authorization'] = accessToken;
