@@ -11,6 +11,7 @@ import {RootState, useAppDispatch} from "../../services/store";
 import './modal.scss'
 import {setModal} from "../../services/slices/burgers.slice";
 import {setChosenIngredient} from "../../services/slices/info-ingredient.slice";
+import OrderInfo from "../order-details/OrderInfo";
 
 const modalRoot = document.getElementById('react-modals');
 
@@ -23,7 +24,7 @@ const Modal: FC<IModal> = ({onClose}) => {
   const dispatch = useAppDispatch();
   const {chosenIngredient} = useSelector((state: RootState) => state.info)
   const {openModal, burgerItems} = useSelector((state: RootState) => state.burgers)
-  const {isOrder} = useSelector((state: RootState) => state.order)
+  const {isOrder, selectedOrder} = useSelector((state: RootState) => state.order)
   const params = useParams()
 
   const escButtonHandle = useCallback((e: KeyboardEvent<Document>): void => {
@@ -43,13 +44,13 @@ const Modal: FC<IModal> = ({onClose}) => {
 
 
   useEffect(() => {
-    if (openModal || isOrder) {
+    if (openModal || isOrder || selectedOrder) {
       document.addEventListener("keydown", escButtonHandle as any);
     }
     return () => {
       document.removeEventListener("keydown", escButtonHandle as any);
     }
-  }, [openModal, isOrder, escButtonHandle])
+  }, [openModal, isOrder, selectedOrder, escButtonHandle])
 
   return ReactDOM.createPortal(
     <ModalOverlay openModal={openModal} closeModal={onClose}>
@@ -67,6 +68,7 @@ const Modal: FC<IModal> = ({onClose}) => {
         {chosenIngredient && <IngredientDetails selectIngredient={chosenIngredient}/>}
 
         {isOrder && <OrderDetails/>}
+        {selectedOrder && <OrderInfo selectOrder={selectedOrder}/>}
 
       </div>
     </ModalOverlay>

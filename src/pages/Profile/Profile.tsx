@@ -1,4 +1,6 @@
 import {FC, useEffect, useState} from 'react'
+import clsx from "clsx";
+import {getCookie} from "typescript-cookie";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
@@ -6,12 +8,16 @@ import {RootState, useAppDispatch} from "../../services/store";
 import styles from './profile.module.scss'
 import {getUser, logout, patchUser} from "../../services/actions/userActions";
 import {clearSuccessMessage} from "../../services/slices/user.slice";
+import TapeCard from "../../components/tape-card/TapeCard";
+import {connect, disconnect} from "../../services/actions/orderActions";
+import {USER_ORDERS_URL} from "../../utils/constants";
 
 const menuType = ['Профиль', 'История заказов', 'Выход']
 
 const Profile: FC = () => {
-  const {user, successSave} = useSelector((state: RootState) => state.user)
+  const {user, successSave, accessToken} = useSelector((state: RootState) => state.user)
   const [menu, setMenu] = useState<string>(menuType[0]);
+  const {orders} = useSelector((state: RootState) => state.order)
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -60,9 +66,22 @@ const Profile: FC = () => {
     dispatch(patchUser({password, email, name}))
   }
 
+  useEffect(() => {
+    if (menu === 'История заказов') {
+      const url = `${USER_ORDERS_URL}?token=${getCookie('accessToken')?.slice(7)}`
+      dispatch(connect(url));
+    }
+    return () => {
+      dispatch(disconnect());
+    };
+  }, [dispatch, menu, accessToken]);
+
+
+  const styleContent = menu === 'История заказов' ? styles.wide : '';
+
   return (
     <>
-      <div className={styles.content}>
+      <div className={clsx(styles.content, styleContent)}>
         <ul>
           {menuType.map(menuItem => (
             <li onClick={() => handleMenu(menuItem)}
@@ -71,61 +90,71 @@ const Profile: FC = () => {
           ))}
         </ul>
 
-        <div>
-          <Input
-            type='text'
-            placeholder='Имя'
-            onChange={e => setName(e.target.value)}
-            icon='EditIcon'
-            value={name}
-            name='name'
-            error={false}
-            errorText='Ошибка'
-            size='default'
-            extraClass="mb-6"
-          />
+        {menu === 'Профиль' &&
+					<div>
+						<div>
+							<Input
+								type='text'
+								placeholder='Имя'
+								onChange={e => setName(e.target.value)}
+								icon='EditIcon'
+								value={name}
+								name='name'
+								error={false}
+								errorText='Ошибка'
+								size='default'
+								extraClass="mb-6"
+							/>
 
-          <Input
-            type='text'
-            placeholder='Логин'
-            onChange={e => setEmail(e.target.value)}
-            icon='EditIcon'
-            value={email}
-            name='login'
-            error={false}
-            errorText='Ошибка'
-            size='default'
-            extraClass="mb-6"
-          />
+							<Input
+								type='text'
+								placeholder='Логин'
+								onChange={e => setEmail(e.target.value)}
+								icon='EditIcon'
+								value={email}
+								name='login'
+								error={false}
+								errorText='Ошибка'
+								size='default'
+								extraClass="mb-6"
+							/>
 
-          <Input
-            type='text'
-            placeholder='Пароль'
-            onChange={e => setPassword(e.target.value)}
-            icon='EditIcon'
-            value={password}
-            name='password'
-            error={false}
-            errorText='Ошибка'
-            size='default'
-          />
-        </div>
+							<Input
+								type='text'
+								placeholder='Пароль'
+								onChange={e => setPassword(e.target.value)}
+								icon='EditIcon'
+								value={password}
+								name='password'
+								error={false}
+								errorText='Ошибка'
+								size='default'
+							/>
+						</div>
+						<div className={styles.info}>
+							<div className={styles.text}>В этом разделе вы можете
+								изменить свои персональные данные
+							</div>
+							<div className="buttons">
+								<Button onClick={cancelHandler} htmlType="button" type="secondary" size="medium">
+									Отмена
+								</Button>
+								<Button onClick={saveHandler} htmlType="button" type="primary" size="medium">
+									Сохранить
+								</Button>
+							</div>
+						</div>
+					</div>
+        }
+
+        {menu === 'История заказов' && <ul className={clsx('custom-scroll', styles.tapes)}>
+            {orders?.map(order => (
+              <li key={order.number}><TapeCard order={order} wide/></li>
+            ))}
+				</ul>}
 
       </div>
 
-      <div className={styles.info}>
-        <div className={styles.text}>В этом разделе вы можете
-          изменить свои персональные данные
-        </div>
-        <div className="buttons">
-          <Button onClick={cancelHandler} htmlType="button" type="secondary" size="medium">
-            Отмена
-          </Button>
-          <Button onClick={saveHandler} htmlType="button" type="primary" size="medium">
-            Сохранить
-          </Button>
-        </div>
-      </div>
 
       {successSave && <div className={styles.success}>Изменения сохранены успешно!</div>}
 
