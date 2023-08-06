@@ -19,15 +19,17 @@ const TapeCard: FC<ITapeCard> = ({wide, order}) => {
 
   const imagesOrder = () => {
       const images:string[] = [];
+      let totalImages = 0;
     order?.ingredients.forEach(ingredient => {
       const image = burgerItems?.find(item => item._id === ingredient)?.image_mobile;
+      totalImages += 1;
       if(image && images.length === 5) {
         images.push(lastImage)
       } else if(image && images.length < 5) {
         images.push(image)
       }
     })
-    return images;
+    return {images, totalImages};
    }
 
   return (
@@ -39,9 +41,10 @@ const TapeCard: FC<ITapeCard> = ({wide, order}) => {
       <div className={styles.title}>{order?.name}</div>
       <div className={styles.footer}>
         <div className={styles.images}>
-          {imagesOrder()?.map((item, idx) => (
-            <div className={clsx(styles.image, idx === 5 && styles.last)}>
-              <img key={idx} src={item} alt={item}/>
+          {imagesOrder()?.images?.map((item, idx) => (
+            <div key={idx} className={clsx(styles.image, idx === 5 && styles.last)}>
+              <img src={item} alt={item}/>
+              {idx === 5 && <span>{imagesOrder().totalImages - 5}+</span>}
             </div>
           ))}
         </div>

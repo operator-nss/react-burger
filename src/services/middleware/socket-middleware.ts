@@ -1,7 +1,8 @@
 import {Middleware, MiddlewareAPI} from "redux";
 import {ActionCreatorWithoutPayload, ActionCreatorWithPayload} from "@reduxjs/toolkit";
-
+import {getCookie} from "typescript-cookie";
 import {AppDispatch, RootState} from "../store";
+import {fetchRefresh} from "../actions/userActions";
 
 export type TWSActionTypes = {
   wsConnect: ActionCreatorWithPayload<string>;
@@ -46,8 +47,14 @@ export const socketMiddleware = (wsActions: TWSActionTypes): Middleware => {
         socket.onmessage = event => {
           const {data} = event;
           const parsedData = JSON.parse(data);
+          console.log('parsedData', parsedData)
+          if(parsedData.message === 'Invalid or missing token') {
+            const refreshToken = getCookie('refreshToken')
+            if(refreshToken) {
+              dispatch(fetchRefresh({token: refreshToken}))
+            }
+          }
           const {success, ...restParsedData} = parsedData;
-
           dispatch(onMessage(parsedData));
         };
 

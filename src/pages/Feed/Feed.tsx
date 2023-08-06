@@ -8,6 +8,7 @@ import {RootState, useAppDispatch} from "../../services/store";
 import {IOrder, setChosenOrder} from "../../services/slices/order.slice";
 import {connect, disconnect} from "../../services/actions/orderActions";
 import {ALL_ORDERS_URL} from "../../utils/constants";
+import Preloader from "../../components/Preloader/Preloader";
 
 const Feed: FC = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,6 @@ const Feed: FC = () => {
     };
   }, [dispatch]);
 
-
   const openModalOrder = (item: IOrder) => {
     dispatch(setChosenOrder(item))
   }
@@ -30,7 +30,7 @@ const Feed: FC = () => {
   if (orders === null) {
     return (
       <div className={styles.order_feed}>
-        <p className="text_type_main-default">Загрузка...</p>
+        <Preloader />
       </div>
     );
   }

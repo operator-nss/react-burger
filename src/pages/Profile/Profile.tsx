@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import clsx from "clsx";
 import {getCookie} from "typescript-cookie";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "../../services/store";
 import styles from './profile.module.scss'
@@ -11,6 +11,7 @@ import {clearSuccessMessage} from "../../services/slices/user.slice";
 import TapeCard from "../../components/tape-card/TapeCard";
 import {connect, disconnect} from "../../services/actions/orderActions";
 import {USER_ORDERS_URL} from "../../utils/constants";
+import {IOrder, setChosenOrder} from "../../services/slices/order.slice";
 
 const menuType = ['Профиль', 'История заказов', 'Выход']
 
@@ -18,7 +19,7 @@ const Profile: FC = () => {
   const {user, successSave, accessToken} = useSelector((state: RootState) => state.user)
   const [menu, setMenu] = useState<string>(menuType[0]);
   const {orders} = useSelector((state: RootState) => state.order)
-
+  const location = useLocation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -76,6 +77,9 @@ const Profile: FC = () => {
     };
   }, [dispatch, menu, accessToken]);
 
+  const openModalOrder = (item: IOrder) => {
+    dispatch(setChosenOrder(item))
+  }
 
   const styleContent = menu === 'История заказов' ? styles.wide : '';
 
@@ -149,7 +153,7 @@ const Profile: FC = () => {
 
         {menu === 'История заказов' && <ul className={clsx('custom-scroll', styles.tapes)}>
             {orders?.map(order => (
-              <li key={order.number}><TapeCard order={order} wide/></li>
+              <li key={order.number}><Link state={{background: location}} to={`/profile/orders/${order.number}`} onClick={() => openModalOrder(order)}><TapeCard order={order} wide/></Link></li>
             ))}
 				</ul>}
 

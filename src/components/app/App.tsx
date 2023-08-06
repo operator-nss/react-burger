@@ -61,7 +61,11 @@ const App = () => {
   };
 
   const orderModalClose = () => {
-    navigate('/feed')
+    if(location.pathname.includes('/profile/orders')) {
+      navigate('/profile')
+    } else if(location.pathname.includes('/feed')) {
+      navigate('/feed')
+    }
     dispatch(setModal(false))
     dispatch(setChosenOrder(null))
   };
@@ -79,9 +83,10 @@ const App = () => {
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
         <Route path="/profile" element={<OnlyAuth component={<Profile/>}/>}/>
-        <Route path="/feed" element={<OnlyAuth component={<Feed/>}/>}/>
+        <Route path="/feed" element={<Feed/>} />
         <Route path="/ingredients/:_id" element={<IngredientPage/>}/>
         <Route path="/feed/:number" element={<FeedPage/>}/>
+        <Route path="/profile/orders/:number" element={<FeedPage/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
 
@@ -94,6 +99,10 @@ const App = () => {
           />
           <Route
             path="/feed/:number"
+            element={<Modal onClose={orderModalClose}/>}
+          />
+          <Route
+            path="/profile/orders/:number"
             element={<Modal onClose={orderModalClose}/>}
           />
         </Routes>

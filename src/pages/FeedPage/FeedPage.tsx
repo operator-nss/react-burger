@@ -1,25 +1,33 @@
 import {FC, useEffect, useState} from 'react'
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
+import {getCookie} from "typescript-cookie";
 import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "../../services/store";
 import {IOrder} from "../../services/slices/order.slice";
 import styles from './feed-page.module.scss'
 import OrderInfo from "../../components/order-details/OrderInfo";
 import {connect, disconnect} from "../../services/actions/orderActions";
-import {ALL_ORDERS_URL} from "../../utils/constants";
+import {ALL_ORDERS_URL, USER_ORDERS_URL} from "../../utils/constants";
+import Preloader from "../../components/Preloader/Preloader";
 
 const FeedPage: FC = () => {
   const orders = useSelector((state: RootState) => state.order.orders)
   const params = useParams()
   const [selectOrder, setSelectOrder] = useState<IOrder | null>(null);
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   useEffect(() => {
-    dispatch(connect(ALL_ORDERS_URL));
+    if (location.pathname.includes('/profile/orders')) {
+      const url = `${USER_ORDERS_URL}?token=${getCookie('accessToken')?.slice(7)}`
+      dispatch(connect(url));
+    } else if (location.pathname.includes('/feed')) {
+      dispatch(connect(ALL_ORDERS_URL));
+    }
     return () => {
       dispatch(disconnect());
     };
-  }, [dispatch]);
+  }, [dispatch, location.pathname]);
 
   useEffect(() => {
     const findOrder = orders?.find(item => String(item?.number) === String(params?.number))
@@ -33,7 +41,7 @@ const FeedPage: FC = () => {
   if (orders === null) {
     return (
       <div className={styles.order_feed}>
-        <p className="text_type_main-default">Загрузка...</p>
+        <Preloader />
       </div>
     );
   }

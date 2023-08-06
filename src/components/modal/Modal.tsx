@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import clsx from "clsx";
 import {useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useNavigationType, useParams} from "react-router-dom";
 import ModalOverlay from "./ModalOverlay/ModalOverlay/ModalOverlay";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import IngredientDetails from "./IngredientDetails/IngredientDetails";
@@ -26,6 +26,9 @@ const Modal: FC<IModal> = ({onClose}) => {
   const {openModal, burgerItems} = useSelector((state: RootState) => state.burgers)
   const {isOrder, selectedOrder} = useSelector((state: RootState) => state.order)
   const params = useParams()
+  const navigationType = useNavigationType();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const escButtonHandle = useCallback((e: KeyboardEvent<Document>): void => {
     if (e.keyCode === 27) {
@@ -34,13 +37,19 @@ const Modal: FC<IModal> = ({onClose}) => {
   }, [onClose])
 
   useEffect(() => {
+    if(params?.number && navigationType !== 'PUSH') {
+      if(location.pathname.includes('/profile/orders')) {
+        navigate(`/profile/orders/${params?.number}`)
+      } else if(location.pathname.includes('/feed')) {
+        navigate(`/feed/${params?.number}`)
+      }
+    }
     if(params?._id) {
       dispatch(setModal(true))
       const findIngredient = burgerItems?.find(item => item._id === params?._id)
       if(findIngredient) dispatch(setChosenIngredient(findIngredient))
-
     }
-  }, [params, dispatch, burgerItems])
+  }, [params, dispatch, burgerItems, navigationType, navigate, location])
 
 
   useEffect(() => {
