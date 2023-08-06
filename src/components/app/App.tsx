@@ -86,7 +86,7 @@ const App = () => {
         <Route path="/feed" element={<Feed/>} />
         <Route path="/ingredients/:_id" element={<IngredientPage/>}/>
         <Route path="/feed/:number" element={<FeedPage/>}/>
-        <Route path="/profile/orders/:number" element={<FeedPage/>}/>
+        <Route path="/profile/orders/:number" element={<OnlyAuth component={<FeedPage/>}/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
 

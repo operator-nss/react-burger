@@ -47,7 +47,6 @@ export const socketMiddleware = (wsActions: TWSActionTypes): Middleware => {
         socket.onmessage = event => {
           const {data} = event;
           const parsedData = JSON.parse(data);
-          console.log('parsedData', parsedData)
           if(parsedData.message === 'Invalid or missing token') {
             const refreshToken = getCookie('refreshToken')
             if(refreshToken) {
