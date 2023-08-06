@@ -40,23 +40,3 @@ axiosWithTokens.interceptors.response.use(
     return Response;
   }
 );
-
-// axiosWithTokens.interceptors.response.use(
-//   (config) => config,
-//   async (error) => {
-//     console.log("error", error)
-//     if (error.response.data.message === 'jwt expired') {
-//       try {
-//         console.log('expired')
-//         const refreshToken = getCookie('refreshToken')
-//         if(refreshToken) {
-//           await fetchRefresh({"token":refreshToken})
-//           return axiosWithTokens.request(error.config)
-//         }
-//       } catch (e) {
-//         if (e === 'jwt expired') logout()
-//       }
-//     }
-//     throw error
-//   }
-// )

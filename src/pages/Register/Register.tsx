@@ -1,4 +1,4 @@
-import {ChangeEvent, FC, SyntheticEvent, useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useRef, useState} from 'react'
 import clsx from "clsx";
 import {useSelector} from "react-redux";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";

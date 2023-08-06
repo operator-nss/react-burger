@@ -1,9 +1,10 @@
-import {ActionReducerMapBuilder, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import {ActionReducerMapBuilder, createAction, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
+import {getCookie} from "typescript-cookie";
 import {ORDER_URL} from "../../utils/constants";
 import {IConstructorIngredient} from "../slices/constructor.slice";
 import {RootState} from "../store";
-import {IConstructorState} from "../slices/order.slice";
+import {IConstructorState, IOrders} from "../slices/order.slice";
 
 export const getOrder = createAsyncThunk<{ state: RootState }>('order/getOrder', async (_, {
   rejectWithValue,
@@ -19,7 +20,12 @@ export const getOrder = createAsyncThunk<{ state: RootState }>('order/getOrder',
       const ingredientsIds = ingredients?.map((ingredient: IConstructorIngredient) => ingredient._id);
       sendData.ingredients.push(...ingredientsIds)
     }
-    const {data} = await axios.post(ORDER_URL, sendData);
+    const {data} = await axios.post(ORDER_URL, sendData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getCookie('accessToken'),
+      }
+    });
     return data
   } catch (err) {
     console.log(err)
@@ -40,3 +46,14 @@ export const getOrderHandler = (builder: ActionReducerMapBuilder<IConstructorSta
     return {...state, isOrderLoading: false, orderError: true}
   })
 }
+
+export const connect = createAction<string, "ORDERS_CONNECT">("ORDERS_CONNECT");
+export const disconnect = createAction("ORDERS_DISCONNECT");
+export const wsOpen = createAction("ORDERS_WS_OPEN");
+export const wsClose = createAction("ORDERS_WS_CLOSE");
+export const wsMessage = createAction<IOrders, "ORDERS_WS_MESSAGE">(
+  "ORDERS_WS_MESSAGE"
+);
+export const wsError = createAction<string, "ORDERS_WS_ERROR">(
+  "ORDERS_WS_ERROR"
+);

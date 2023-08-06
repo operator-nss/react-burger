@@ -17,7 +17,7 @@ const AppHeader: FC = () => {
             </NavLink>
           </li>
           <li className={headerStyles.listItem}>
-            <NavLink className={({ isActive }) => isActive ? headerStyles.activeLink : ""} to='/123'>
+            <NavLink className={({ isActive }) => isActive ? headerStyles.activeLink : ""} to='/feed'>
               <ListIcon type="secondary"/>
               <p className="text text_type_main-default text_color_inactive ml-2">Лента заказов</p>
             </NavLink>

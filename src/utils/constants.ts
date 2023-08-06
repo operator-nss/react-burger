@@ -8,3 +8,5 @@ export const REGISTER_URL = `${API_URL}/auth/register`
 export const LOGOUT_URL = `${API_URL}/auth/logout`
 export const UPDATE_TOKEN_URL = `${API_URL}/auth/token`
 export const INFO_USER_URL = `${API_URL}/auth/user`
+export const ALL_ORDERS_URL = "wss:/norma.nomoreparties.space/orders/all";
+export const USER_ORDERS_URL = "wss://norma.nomoreparties.space/orders";

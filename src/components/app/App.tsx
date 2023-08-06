@@ -18,13 +18,15 @@ import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import NotFound from "../../pages/NotFound/NotFound";
 import {OnlyAuth, OnlyUnAuth} from "../ProtectedRouteElement/ProtectedRouteElement";
 import {getUser} from "../../services/actions/userActions";
-import {setOrder} from "../../services/slices/order.slice";
+import {setChosenOrder, setOrder} from "../../services/slices/order.slice";
 import {setChosenIngredient} from "../../services/slices/info-ingredient.slice";
+import Feed from "../../pages/Feed/Feed";
+import FeedPage from "../../pages/FeedPage/FeedPage";
 
 const App = () => {
   const dispatch = useAppDispatch();
   const chosenIngredient = useSelector((state: RootState) => state.info.chosenIngredient)
-  const isOrder = useSelector((state: RootState) => state.order.isOrder)
+  const {isOrder, selectedOrder} = useSelector((state: RootState) => state.order)
   const {refreshToken, accessToken} = useSelector((state: RootState) => state.user)
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    if (chosenIngredient || isOrder) {
+    if (chosenIngredient || isOrder || selectedOrder) {
       dispatch(setModal(true))
     }
-  }, [chosenIngredient, isOrder, dispatch])
+  }, [chosenIngredient, isOrder, selectedOrder, dispatch])
 
   useEffect(() => {
     if (refreshToken) {
@@ -55,11 +57,22 @@ const App = () => {
     dispatch(setModal(false))
     dispatch(setOrder(false))
     dispatch(setChosenIngredient(null))
+    dispatch(setChosenOrder(null))
+  };
+
+  const orderModalClose = () => {
+    if(location.pathname.includes('/profile/orders')) {
+      navigate('/profile')
+    } else if(location.pathname.includes('/feed')) {
+      navigate('/feed')
+    }
+    dispatch(setModal(false))
+    dispatch(setChosenOrder(null))
   };
 
   return (
     <div className={appStyles.App}>
-      {(isOrder || chosenIngredient) && <Modal onClose={handleModalClose}/>}
+      {(isOrder || chosenIngredient || selectedOrder) && <Modal onClose={handleModalClose}/>}
 
       <AppHeader/>
 
@@ -70,7 +83,10 @@ const App = () => {
         <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword/>}/>}/>
         <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword/>}/>}/>
         <Route path="/profile" element={<OnlyAuth component={<Profile/>}/>}/>
+        <Route path="/feed" element={<Feed/>} />
         <Route path="/ingredients/:_id" element={<IngredientPage/>}/>
+        <Route path="/feed/:number" element={<FeedPage/>}/>
+        <Route path="/profile/orders/:number" element={<OnlyAuth component={<FeedPage/>}/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
 
@@ -80,6 +96,14 @@ const App = () => {
           <Route
             path="/ingredients/:_id"
             element={<Modal onClose={handleModalClose}/>}
+          />
+          <Route
+            path="/feed/:number"
+            element={<Modal onClose={orderModalClose}/>}
+          />
+          <Route
+            path="/profile/orders/:number"
+            element={<Modal onClose={orderModalClose}/>}
           />
         </Routes>
       )}
