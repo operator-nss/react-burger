@@ -72,8 +72,6 @@ const App = () => {
 
   return (
     <div className={appStyles.App}>
-      {(isOrder || chosenIngredient || selectedOrder) && <Modal onClose={handleModalClose}/>}
-
       <AppHeader/>
 
       <Routes location={background || location}>
