@@ -28,7 +28,7 @@ export interface IUserState {
   }
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   isLoading: false,
   name: '',
   login: '',
@@ -48,7 +48,7 @@ const initialState: IUserState = {
   }
 }
 
-export const burgersSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -80,6 +80,6 @@ export const burgersSlice = createSlice({
   }
 })
 
-export const {clearSuccess,setCheckAuth,clearUserLogin, clearErrorMessage, clearSuccessMessage} = burgersSlice.actions
+export const {clearSuccess,setCheckAuth,clearUserLogin, clearErrorMessage, clearSuccessMessage} = userSlice.actions
 
-export default burgersSlice.reducer
+export default userSlice.reducer

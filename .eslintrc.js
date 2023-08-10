@@ -9,7 +9,8 @@ module.exports = {
 		"airbnb-typescript",
 		"prettier",
 		"airbnb/hooks",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:cypress/recommended"
 	],
 	parserOptions: {
 		"project": "./tsconfig.json",
@@ -19,6 +20,7 @@ module.exports = {
 	},
 	plugins: [
 		'@typescript-eslint',
+		"cypress"
 	],
 	rules: {
 		"no-param-reassign": 0,

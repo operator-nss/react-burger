@@ -65,6 +65,7 @@ const Modal: FC<IModal> = ({onClose}) => {
     <ModalOverlay openModal={openModal} closeModal={onClose}>
       <div className={clsx("modal", {open: openModal})}>
         <div
+          data-test='modal-close'
           role="presentation"
           className="modal-close"
           onMouseOver={() => setHoverClose(true)}

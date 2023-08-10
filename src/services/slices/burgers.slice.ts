@@ -9,7 +9,7 @@ export interface IConstructorState {
   errorBurgers: boolean
 }
 
-const initialState: IConstructorState = {
+export const initialState: IConstructorState = {
   burgerItems: [],
   isLoading: false,
   openModal: false,
