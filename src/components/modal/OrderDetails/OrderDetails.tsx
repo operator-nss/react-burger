@@ -15,7 +15,7 @@ const OrderDetails: FC = () => {
         orderError
           ? <div className={orderStyles.error}>Ошибка обработки заказа</div>
           : <>
-            <div className={clsx(orderStyles.title, "text text_type_digits-large mt-20")}>{orderCount}</div>
+            <div data-test='order-count' className={clsx(orderStyles.title, "text text_type_digits-large mt-20")}>{orderCount}</div>
             <div className={clsx(orderStyles.subtitle, "text text_type_main-medium mt-8")}>идентификатор заказа</div>
             <div className={clsx(orderStyles.image, "mt-15")}>
               <img src={orderImage} alt=""/>

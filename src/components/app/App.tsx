@@ -73,7 +73,7 @@ const App = () => {
   return (
     <div className={appStyles.App}>
       <AppHeader/>
-
+      {isOrder && <Modal onClose={handleModalClose}/>}
       <Routes location={background || location}>
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<OnlyUnAuth component={<Login/>}/>}/>

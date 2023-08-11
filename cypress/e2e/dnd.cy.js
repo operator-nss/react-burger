@@ -23,4 +23,12 @@ describe("Application", () => {
 		);
 	});
 	
+	it('modal close on overlay click', () => {
+		cy.visit('http://localhost:3000/');
+		cy.get("[data-test='Краторная булка N-200i']").click()
+		cy.get("[data-test='overlay']").should('exist');
+		cy.get("[data-test='overlay']").click('left', { force: true })
+		cy.get("[data-test='overlay']").should('not.exist');
+	});
+	
 })

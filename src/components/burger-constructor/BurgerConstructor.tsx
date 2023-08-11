@@ -124,7 +124,7 @@ const BurgerConstructor: FC = () => {
 
         </div>
 
-        <Button disabled={!bun} onClick={getOrderHandler} htmlType="button" type="primary" size="large">
+        <Button data-test='order-button' disabled={!bun} onClick={getOrderHandler} htmlType="button" type="primary" size="large">
           Оформить заказ
         </Button>
       </div>

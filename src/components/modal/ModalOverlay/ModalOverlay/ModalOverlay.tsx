@@ -21,6 +21,7 @@ const ModalOverlay:FC<IModalOverlay> = ({children, openModal, closeModal}) => {
 			role="presentation"
 			onClick={closeOverlay}
 			className={clsx("overlay", {open: openModal})}
+			data-test='overlay'
 		>
 			{children}
 		</div>

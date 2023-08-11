@@ -52,6 +52,7 @@ const Login: FC = () => {
           errorText={errorMessage}
           size='default'
           extraClass="mb-6"
+          data-test='email-field'
         />
 
         <Input
@@ -66,9 +67,10 @@ const Login: FC = () => {
           errorText={errorMessage}
           size='default'
           extraClass="mb-6"
+          data-test='password-field'
         />
 
-        <Button onClick={loginHandler} extraClass='mb-20' htmlType="button" type="primary" size="medium">
+        <Button data-test='login-button' onClick={loginHandler} extraClass='mb-20' htmlType="button" type="primary" size="medium">
           Войти
         </Button>
       </form>
