@@ -5,7 +5,7 @@ export interface IConstructorState {
   chosenIngredient: IBurger | null
 }
 
-const initialState:IConstructorState = {
+export const initialState:IConstructorState = {
   chosenIngredient: null
 }
 

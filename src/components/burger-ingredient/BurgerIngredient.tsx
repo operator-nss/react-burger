@@ -38,6 +38,7 @@ const BurgerIngredient: FC<IBurgerIngredient> = ({burger}) => {
       state={{background: location}}
       ref={drag}
       className={ingredientsStyles.burgerItem}
+      data-test={burger.name}
     >
       <img className={ingredientsStyles.image} src={burger.image_large} alt=""/>
       <div className={clsx(ingredientsStyles.price, "text text_type_main-medium")}>

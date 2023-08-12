@@ -17,7 +17,7 @@ export interface IConstructorState {
   isLoading: boolean
 }
 
-const initialState:IConstructorState = {
+export const initialState:IConstructorState = {
   bun: null,
   ingredients: [],
   isLoading: false

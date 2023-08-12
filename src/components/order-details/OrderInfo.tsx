@@ -8,7 +8,6 @@ import {reduceIngredients} from "../../utils/order";
 import {RootState} from "../../services/store";
 import styles from './order-info.module.scss'
 import {IOrder} from "../../services/slices/order.slice";
-import {logout} from "../../services/actions/userActions";
 
 interface IOrderInfo {
   selectOrder: IOrder

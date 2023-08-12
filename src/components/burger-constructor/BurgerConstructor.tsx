@@ -76,11 +76,11 @@ const BurgerConstructor: FC = () => {
   }
 
   return (
-    <div ref={dropList} className="mt-25">
+    <div ref={dropList} data-test='constructor-burgers' className="mt-25">
       <div className={clsx("pr-2", constructorStyles.content)}>
         <ul className={constructorStyles.list}>
 
-          {bun && <li className={clsx(constructorStyles.item, constructorStyles.first)}>
+          {bun && <li data-test='constructor-burger-top' className={clsx(constructorStyles.item, constructorStyles.first)}>
 						<ConstructorElement
 							isLocked
 							type='top'
@@ -102,7 +102,7 @@ const BurgerConstructor: FC = () => {
             ))}
 					</div>}
 
-          {bun && <li className={clsx(constructorStyles.item, constructorStyles.end)}>
+          {bun && <li data-test='constructor-burger-bottom' className={clsx(constructorStyles.item, constructorStyles.end)}>
 						<ConstructorElement
 							isLocked
 							type="bottom"
@@ -124,7 +124,7 @@ const BurgerConstructor: FC = () => {
 
         </div>
 
-        <Button disabled={!bun} onClick={getOrderHandler} htmlType="button" type="primary" size="large">
+        <Button data-test='order-button' disabled={!bun} onClick={getOrderHandler} htmlType="button" type="primary" size="large">
           Оформить заказ
         </Button>
       </div>

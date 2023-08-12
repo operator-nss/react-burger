@@ -72,10 +72,8 @@ const App = () => {
 
   return (
     <div className={appStyles.App}>
-      {(isOrder || chosenIngredient || selectedOrder) && <Modal onClose={handleModalClose}/>}
-
       <AppHeader/>
-
+      {isOrder && <Modal onClose={handleModalClose}/>}
       <Routes location={background || location}>
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<OnlyUnAuth component={<Login/>}/>}/>

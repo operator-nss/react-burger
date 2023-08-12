@@ -31,7 +31,7 @@ export interface IConstructorState {
   error: string
 }
 
-const initialState:IConstructorState = {
+export const initialState:IConstructorState = {
   totalPrice: 0,
   isOrder: false,
   orderCount: null,

@@ -8,10 +8,9 @@ interface IIngredientDetails {
 }
 
 const IngredientDetails: FC<IIngredientDetails> = ({selectIngredient}) => {
-
   return (
     <>
-      <h3 className={clsx(ingredientStyles.title, 'text text_type_main-large')}>Детали ингредиента</h3>
+      <h3 data-test='modal-title' className={clsx(ingredientStyles.title, 'text text_type_main-large')}>Детали ингредиента</h3>
       <div className={ingredientStyles.content}>
         <div className={clsx(ingredientStyles.image, 'mb-4')}>
           <img src={selectIngredient?.image_large} alt=""/>
